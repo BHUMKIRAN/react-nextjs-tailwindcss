@@ -1,15 +1,12 @@
-'use client';
-import Button from './components/Button';
+import React from 'react'
+import UseState from './usestate/page'
 
-export default function HomePage() {
+const MainPage = () => {
   return (
-    <div className="text-center">
-      <p className='bg-gradient-to-r from-red-200 via-green-200 rounded-3xl h-50 w-50 shadow-2xl shadow-amber-500 text-green-700 flex justify-center'>Mah nigam ho </p>
-      <select name="kiran" id="kiran">
-        <option value="kiran1">kiran1</option>
-        <option value="name">name</option>
-        <option value='address'> address </option>
-      </select>
+    <div>
+      <UseState/>
     </div>
-  );
+  )
 }
+
+export default MainPage
