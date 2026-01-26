@@ -1,36 +1,139 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+### React Leaflet
 
-## Getting Started
+npm install leaflet react-leaflet leaflet-geosearch leaflet-defaulticon-compatibility
+npm install -D @types/leaflet
 
-First, run the development server:
+### Why Dynamic Import?
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Next.js renders components on the **server by default**, but Leaflet depends on the browser’s `window` object.
+
+To avoid the `window is not defined` error:
+
+```ts
+import dynamic from "next/dynamic";
+
+const Map = dynamic(() => import("@/components/Map"), {
+  ssr: false,
+});
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+✔ This ensures the map loads **only on the client**.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+##  Component Breakdown
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### `SearchField` – Location Search
 
-## Learn More
+**Purpose:**
+Allows users to search locations by name or address.
 
-To learn more about Next.js, take a look at the following resources:
+**How it works:**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+* Uses `leaflet-geosearch`
+* Powered by **OpenStreetMap (Nominatim)**
+* Hooks into the Leaflet instance using `useMap()`
+* Automatically **flies** to searched coordinates
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+### `LocationMarker` – Animated Blue Dot
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Purpose:**
+Displays the user’s real-time location.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**How it works:**
+
+* Listens to the `locationfound` event
+* Stores coordinates in React state
+* Uses `L.divIcon` instead of default markers
+
+**Visual Design:**
+
+* Solid blue center dot
+* Pulsing ring animation using CSS
+
+```css
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.7; }
+  100% { transform: scale(3); opacity: 0; }
+}
+```
+
+---
+
+###  Locate Button (Custom Event Bridge)
+
+**Problem:**
+React buttons can’t directly access Leaflet’s internal map instance.
+
+**Solution:**
+Uses a `CustomEvent` to bridge React → Leaflet.
+
+**Flow:**
+
+```
+Button Click
+   ↓
+CustomEvent fired
+   ↓
+map.locate()
+   ↓
+locationfound event
+```
+
+---
+
+## 🎨 Styling & UX
+
+### GPS Blue Dot Styling
+
+```css
+.user-location-dot {
+  width: 14px;
+  height: 14px;
+  background: #1e90ff;
+  border-radius: 50%;
+  position: relative;
+}
+
+.user-location-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+  background: rgba(30, 144, 255, 0.4);
+}
+```
+
+### Layout Rules
+
+* Map fills **100% height** of parent container
+* Responsive and mobile-friendly
+* No layout shift on load
+
+---
+
+## ⚠️ Common Issues & Fixes
+
+| Issue                      | Solution                                         |
+| -------------------------- | ------------------------------------------------ |
+| `appendChild` error        | Disable React Strict Mode or ensure `ssr: false` |
+| Map is grey / blank        | Import `leaflet/dist/leaflet.css` at top         |
+| Marker icons missing       | Use `leaflet-defaulticon-compatibility`          |
+| Location permission denied | Requires **HTTPS** (works on localhost)          |
+
+---
+
+## 🔄 Data Flow
+
+```
+User Action (Search / Locate)
+        ↓
+Leaflet Engine
+        ↓
+Coordinates Retrieved
+        ↓
+React State Updated
+        ↓
+DOM Render (Blue Dot + Popup)
+```
