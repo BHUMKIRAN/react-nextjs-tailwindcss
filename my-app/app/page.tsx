@@ -1,10 +1,12 @@
 import React from 'react'
-import UseState from './usestate/page'
+import UseState from './useState/page'
+import UseEffect from './useEffect/page'
 
 const MainPage = () => {
   return (
     <div>
-      <UseState/>
+      {/* <UseState/> */}
+      <UseEffect/>
     </div>
   )
 }
