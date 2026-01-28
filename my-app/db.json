@@ -1,0 +1,8 @@
+{
+    "auction": {
+        "currentPrice": 0,
+        "highestBidder": "None",
+        "itemName": "Rare Antique"
+    },
+    "bids": []
+}
