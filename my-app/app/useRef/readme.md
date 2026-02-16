@@ -53,37 +53,6 @@ const refContainer = useRef(initialValue);
 4. RENDER input with ref attached
 ```
 
-**Solution:**
-```jsx
-import { useRef, useEffect } from "react";
-
-function AutoFocusInput() {
-  // Step 1: Create ref to hold input element
-  const inputRef = useRef(null);
-
-  useEffect(() => {
-    // Step 3: Focus input when component mounts
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, []); // Run once on mount
-
-  // Step 2 & 4: Attach ref to input
-  return (
-    <div>
-      <h2>Login Form</h2>
-      <input
-        ref={inputRef}
-        type="text"
-        placeholder="Username (auto-focused)"
-      />
-    </div>
-  );
-}
-
-export default AutoFocusInput;
-```
-
 **How It Works:**
 1. `useRef(null)` creates a ref object with `current` property set to null
 2. `ref={inputRef}` connects the ref to the actual DOM input element
