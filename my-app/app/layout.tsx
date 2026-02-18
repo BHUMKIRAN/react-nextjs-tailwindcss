@@ -1,7 +1,12 @@
- function RootLayout({children}) {
+import './globals.css'
+
+function RootLayout({children , modal}) {
   return (
     <html>
-      <body>{children}</body>
+      <body>
+        {children}
+        {modal}
+      </body>
     </html>
   );
 }

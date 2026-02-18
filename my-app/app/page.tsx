@@ -1,5 +1,6 @@
 "use client"
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { useEffect } from "react";
 import { io } from "socket.io-client";
 const socket = io("http://localhost:3001");
@@ -39,6 +40,16 @@ export default function Home() {
     >
       Send Message
     </button>
+      <div className="flex flex-col items-center justify-center min-h-screen gap-4">
+      <h1 className="text-3xl font-bold">Home Page</h1>
+
+      <Link
+        href="/login"
+        className="bg-blue-600 text-white px-4 py-2 rounded"
+      >
+        Open Login Modal
+      </Link>
+    </div>
     </main>
   );
 }
