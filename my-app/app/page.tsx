@@ -1,8 +1,10 @@
 "use client"
+import React from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useEffect } from "react";
 import { io } from "socket.io-client";
+import RegisterPage from "./register/page";
 const socket = io("http://localhost:3001");
 
 // Force SSR off for the map
@@ -16,6 +18,8 @@ const MapWithNoSSR = dynamic(() => import("@/components/Map"), {
 });
 
 export default function Home() {
+
+  const [open , setOpen] = React.useState(false)
 
   useEffect(() => {
     socket.on("connect", () => {
@@ -49,7 +53,12 @@ export default function Home() {
       >
         Open Login Modal
       </Link>
+      <button onClick={()=>setOpen(true)}>
+       register
+    </button>
     </div>
+    
+    <RegisterPage open={open} setOpen={setOpen}/>
     </main>
   );
 }
