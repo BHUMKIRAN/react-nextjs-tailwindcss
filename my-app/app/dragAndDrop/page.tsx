@@ -1,16 +1,11 @@
-import React from 'react'
-import { DownloadModal } from './DownloadModal'
-import { FileUploadModal } from './FileUploadModal'
-import { DragDropZone } from './DragDropZone'
+import Page from "./usingdndCorekit/page";
 
-const dnd = () => {
+const DragAndDropPage = () => {
   return (
     <div>
-        <DownloadModal/>
-        <FileUploadModal/>
-        <DragDropZone/>
+      <Page />
     </div>
-  )
-}
+  );
+};
 
-export default dnd
+export default DragAndDropPage;
