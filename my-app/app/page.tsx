@@ -54,9 +54,9 @@ export default function Home() {
         Open Login Modal
       </Link>
 
-      <div className="text-muted " >
+      <h1 className="text-muted font-kiran text-kiran " >
         नमस्ते संसार
-      </div>
+      </h1>
       <button onClick={()=>setOpen(true)}>
        register
     </button>
