@@ -1,8 +1,20 @@
-import './globals.css'
+import { type ReactNode } from "react";
+import "./globals.css";
+import { Noto_Serif_Devanagari} from "next/font/google"
 
-function RootLayout({children , modal}) {
+const devanagrai =  Noto_Serif_Devanagari({
+  subsets: ["devanagari"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-devanagari",
+})
+interface RootLayoutProps {
+  children: ReactNode;
+  modal: ReactNode;
+}
+
+export default function RootLayout({ children, modal }: RootLayoutProps) {
   return (
-    <html>
+    <html lang="ne" className={devanagrai.variable}>
       <body>
         {children}
         {modal}
@@ -10,4 +22,3 @@ function RootLayout({children , modal}) {
     </html>
   );
 }
-export default RootLayout;
