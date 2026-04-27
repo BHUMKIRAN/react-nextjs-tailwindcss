@@ -17,6 +17,11 @@ const MapWithNoSSR = dynamic(() => import("@/components/Map"), {
   ),
 });
 
+const value = {
+  name : "kiran",
+  age : 20
+}
+console.table(value)
 export default function Home() {
 
   const [open , setOpen] = React.useState(false)
